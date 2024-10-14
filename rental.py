@@ -55,3 +55,9 @@ class Rental:
         else:
             # Other rentals get only 1 point
             return 1
+
+    def get_rental_points(self, rental):
+        rental_point = 0
+        for ren in rental:
+            rental_point += self.rental_points(ren)
+        return rental_point
