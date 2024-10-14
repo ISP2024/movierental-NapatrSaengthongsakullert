@@ -2,6 +2,7 @@ from rental import Rental
 from movie import Movie
 import logging
 
+
 class Customer:
     """A customer who rents movies.
 
@@ -19,17 +20,23 @@ class Customer:
         """Add a rental for this customer"""
         if rental not in self.rentals:
             self.rentals.append(rental)
-    
+
     def get_name(self):
         """Get the customer's name."""
         return self.name
 
-    def total_charge(self):
+    def get_total_charge(self):
         """Get the total charge for the customer"""
-        total_amount = 0   # total rental charges
+        total_amount = 0  # total rental charges
         for rental in self.rentals:
             total_amount += rental.get_price(rental)
         return total_amount
+
+    def get_total_rental_points(self, rentals):
+        rental_point = 0
+        for ren in rentals:
+            rental_point += ren.get_rental_points()
+        return rental_point
 
     def statement(self):
         """Create a statement of rentals for the current period.
@@ -56,11 +63,10 @@ class Customer:
                 rental.get_price(rental))
             # and accumulate activity
 
-
         # footer: summary of charges
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
-                       "Total Charges", "", self.total_charge())
-        statement += "Frequent Renter Points earned: {}\n".format(rental.get_rental_points(self.rentals))
+            "Total Charges", "", self.get_total_charge())
+        statement += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points(self.rentals))
 
         return statement
