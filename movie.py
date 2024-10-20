@@ -1,6 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Collection, Optional
 import csv
+import logging
+
+logging.basicConfig(level=logging.ERROR, format='%(message)s')
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -37,17 +41,25 @@ class MovieCatalog:
         """Load movies from the CSV file into memory."""
         with open("movies.csv", mode='r', newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
-            next(reader)
-            for row in reader:
-                if len(row) < 4:
+            for line_number, row in enumerate(reader, start=1):
+                if not row or not row[0].strip():
                     continue
 
-                title = row[1].strip()
-                year = int(row[2].strip())
-                genres = [genre.strip() for genre in row[3].split('|')]
+                if row[0].startswith('#'):
+                    continue
 
-                movie = Movie(title, year, genres)
-                self._movies[(title.lower(), year)] = movie
+                if len(row) < 4:
+                    logger.error(f"Line {line_number}: Unrecognized format \"{','.join(row)}\"")
+                    continue
+
+                try:
+                    title = row[1].strip()
+                    year = int(row[2].strip())
+                    genres = [genre.strip() for genre in row[3].split('|')]
+                    movie = Movie(title, year, genres)
+                    self._movies[(title.lower(), year)] = movie
+                except ValueError as e:
+                    logger.error(f"Line {line_number}: Unrecognized format \"{','.join(row)}\"")
 
     def get_movie(self, title: str, year: Optional[int] = None) -> Optional[Movie]:
         """Get a movie by title and optional year."""
