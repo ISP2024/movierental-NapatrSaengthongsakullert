@@ -1,6 +1,4 @@
 from rental import Rental
-from movie import Movie
-import logging
 
 
 class Customer:
@@ -29,12 +27,12 @@ class Customer:
         """Get the total charge for the customer"""
         total_amount = 0  # total rental charges
         for rental in self.rentals:
-            total_amount += rental.get_price(rental)
+            total_amount += rental.get_price()
         return total_amount
 
-    def get_total_rental_points(self, rentals):
+    def get_total_rental_points(self):
         rental_point = 0
-        for ren in rentals:
+        for ren in self.rentals:
             rental_point += ren.get_rental_points()
         return rental_point
 
@@ -60,13 +58,13 @@ class Customer:
             statement += rental_fmt.format(
                 rental.get_movie().get_title(),
                 rental.get_days_rented(),
-                rental.get_price(rental))
+                rental.get_price())
             # and accumulate activity
 
         # footer: summary of charges
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
             "Total Charges", "", self.get_total_charge())
-        statement += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points(self.rentals))
+        statement += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points())
 
         return statement

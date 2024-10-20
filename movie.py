@@ -14,12 +14,6 @@ class Movie:
         # get the price code
         return self.price_code
 
-    def get_price(self, days: int) -> float:
-        return self.price_code.get_price(days)
-
-    def get_rental_points(self, days: int) -> int:
-        return self.price_code.get_rental_points(days)
-
     def get_title(self):
         return self.title
 
