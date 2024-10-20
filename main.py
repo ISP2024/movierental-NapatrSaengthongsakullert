@@ -27,7 +27,6 @@ if __name__ == '__main__':
     days = 1
     for movie in movies:
         if movie:
-            price_code = price_code_for_movie(movie)
-            customer.add_rental(Rental(movie, days, price_code))
+            customer.add_rental(Rental(movie, days))
         days = (days + 2) % 5 + 1
     print(customer.statement())
