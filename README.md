@@ -30,5 +30,12 @@ Rental class is already response for the price_code to calculate price and renta
 Answer: Single Responsibility Principle is the best choice for this refactoring because movie class only focuses on the movie details while rental class focuses on price_code for price and rental_point.
 They have separate responsibilities.
 
+### 5.2 Describe where you implement this method and the reasons for your choice.
+
+Answer: I implement this method in the pricing module.
+Because
+1. The pricing module is responsible for all price logic. If we keep this method in this module, then it is a Single Responsibility Principle.
+2. The pricing module is focused on price strategies, making it a suitable location for methods that determine price codes. That means if we put the function in this module, then it is a High Cohesion.
+
 
 

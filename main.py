@@ -2,7 +2,7 @@
 # Create a customer with some movies and print a statement.
 
 from movie import MovieCatalog
-from pricing import NEW_RELEASE, REGULAR, CHILDREN
+from pricing import price_code_for_movie
 from rental import Rental
 from customer import Customer
 
@@ -24,10 +24,10 @@ if __name__ == '__main__':
     catalog = MovieCatalog()
     customer = Customer("Edward Snowden")
     movies = make_movies(catalog)
-    price_codes = [NEW_RELEASE, REGULAR, CHILDREN, NEW_RELEASE, REGULAR]
     days = 1
-    for i in range(len(movies)):
-        if movies[i]:
-            customer.add_rental(Rental(movies[i], days, price_codes[i]))
+    for movie in movies:
+        if movie:
+            price_code = price_code_for_movie(movie)
+            customer.add_rental(Rental(movie, days, price_code))
         days = (days + 2) % 5 + 1
     print(customer.statement())
